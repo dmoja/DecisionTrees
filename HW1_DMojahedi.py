@@ -10,10 +10,9 @@ import graphviz
 
 # Determining gini coefficient.
 def gini(data_set, feature_location, feature_value):
-    conditional_boolean = data_set[:, feature_location] == feature_value
-    relevant_rows = data_set[conditional_boolean, :]
-    print(1 - math.pow((np.count_nonzero(relevant_rows[:, 6] == 'acc') / relevant_rows.shape[0]), 2) - math.pow(
-        (np.count_nonzero(relevant_rows[:, 6] == 'unacc') / relevant_rows.shape[0]), 2))
+    relevant_rows = data_set[data_set[:, feature_location] == feature_value]
+    print(feature_value, "=", 1 - math.pow((np.count_nonzero(relevant_rows[:, 6] == 'acc') / relevant_rows.shape[0]), 2) - math.pow(
+            (np.count_nonzero(relevant_rows[:, 6] == 'unacc') / relevant_rows.shape[0]), 2))
 
 
 df = pd.read_csv('car.training.csv', header=None)
@@ -21,14 +20,15 @@ data = df.iloc[:, :].values
 
 
 
-parent_node = 'null'  # Boolean value to determine if node is root.
-node = {}  # Node array
-node_iterator = 0  # A value for iterating node index values.
+# parent_node = 'null'  # Boolean value to determine if node is root.
+# node = {}  # Node array
+# node_iterator = 0  # A value for iterating node index values.
 
 
 # while True:  # Keep looping until lowest gini coefficient reaches a certain value.
 #
 feature_values = [0] * (data.shape[1] - 1)
+feature_values.clear()
 #     # The minimum gini coefficient observed in data set during each run of the analysis
 #     minimum_gini = 100
 #     # Counting the number of instances within one feature where the minimum gini coefficient is observed.
@@ -40,9 +40,9 @@ feature_values = [0] * (data.shape[1] - 1)
 #     remaining_features.clear()
 #
 for column_location in range(0, data.shape[1] - 1):
-    feature_values[column_location] = np.unique(data[:, column_location])  # Getting unique values from each column.
-    for featured_value in feature_values:
-        gini(data, column_location, featured_value)
+    feature_values.append(np.unique(data[:, column_location]))  # Getting unique values from each column.
+    for x in range(0, len(feature_values[column_location])):
+        gini(data, column_location, feature_values[column_location][x])
 #             # Checking if feature value gini coefficient is lowest one in data set.
 #             if gini(data, column_location, featured_value) < minimum_gini:
 #                 min_count[column_location] = 1  # Counting number of feature values within column that share lowest gini coefficient.
