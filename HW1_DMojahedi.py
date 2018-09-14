@@ -21,6 +21,60 @@ def extract_used_features(data_set, used_feature_values, used_column_location):
         print(data_set.shape)
         return data_set
 
+
+def tree_maker(node_value, column_number, relevant_features, remaining_features):
+    # Combine relevant feature value into strings for node labeling.
+    combined_relevant_features = []
+    for rel_feat_x in range(0, len(relevant_features)):
+        for rel_feat_y in range(0, len(remaining_features[rel_feat_x])):
+            if rel_feat_y != len(relevant_features[rel_feat_x]) - 1:
+                relevant_features[rel_feat_x][rel_feat_y] = relevant_features[rel_feat_x][rel_feat_y] + " / "
+        combined_relevant_features.append(''.join(relevant_features[rel_feat_x]))
+
+    # Combine combine features into strings for node labeling.
+    combined_remaining_features = []
+    for rem_feat_x in range(0, len(relevant_features)):
+        for rem_feat_y in range(0, len(remaining_features[rem_feat_x])):
+            if rem_feat_y != len(relevant_features[rem_feat_x]) - 1:
+                relevant_features[rem_feat_x][rem_feat_y] = relevant_features[rem_feat_x][rem_feat_y] + " / "
+        combined_remaining_features.append(''.join(relevant_features[rem_feat_x]))
+
+
+
+    root_tuple = "Column ", str(column_number[0])
+    root = Node(root_tuple)
+    for x in range(0, len(remaining_features)):
+        if x % 2 == 0:
+
+    root_tuple = "Column ", str(column_number[0])
+    root = Node(root_tuple)
+    for x in range(0, len(remaining_features)):
+        if x % 2 == 0:
+
+
+        for x in range(0, len(min_count_feature_values)):
+                parent_node_name.append(min_count_feature_values[x])
+                if x < len(min_count_feature_values) - 1:
+                    parent_node_name.append('/')
+            node_name = "Column", str(relevant_feature)
+            node_name = ''.join(node_name)
+            root_name = node_name
+            root = Node(node_name)
+            parent_node_name = ''.join(parent_node_name)
+        else:
+            if node_iterator % 2 == 0:
+                node["string{0}".format(node_iterator)] = Node([min_count_feature_values], parent=[parent_node_name])
+            else:
+                node["string{0}".format(node_iterator)] = Node([remaining_features], parent=[parent_node_name])
+
+        node_iterator += 1
+
+    left_node = feature_values[relevant_feature]
+    right_node = remaining_features
+
+    print(RenderTree(root))
+
+
 df = pd.read_csv('car.training.csv', header=None)
 data = df.iloc[:, :].values
 
@@ -75,29 +129,6 @@ while i < 10:  # Keep looping until lowest gini coefficient reaches a certain va
 
     parent_node_name = []
 
-    if node_iterator > -2:
-        if parent_node == 'null':
-            for x in range(0, len(min_count_feature_values)):
-                parent_node_name.append(min_count_feature_values[x])
-                if x < len(min_count_feature_values) - 1:
-                    parent_node_name.append('/')
-            node_name = "Column", str(relevant_feature)
-            node_name = ''.join(node_name)
-            root_name = node_name
-            root = Node(node_name)
-            parent_node_name = ''.join(parent_node_name)
-        else:
-            if node_iterator % 2 == 0:
-                node["string{0}".format(node_iterator)] = Node([min_count_feature_values], parent=[parent_node_name])
-            else:
-                node["string{0}".format(node_iterator)] = Node([remaining_features], parent=[parent_node_name])
-
-        node_iterator += 1
-
-    left_node = feature_values[relevant_feature]
-    right_node = remaining_features
-
-    print(RenderTree(root))
 #
 #     data = pd.DataFrame(data)  # Convert numpy array to pandas Dataframe to more easily remove rows.
 #
